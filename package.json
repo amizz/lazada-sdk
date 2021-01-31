@@ -1,5 +1,5 @@
 {
-  "name": "lazada-open-platform-sdk",
+  "name": "lazada-sdk",
   "version": "2.0.0-0",
   "description": "Lazada Open Platform SDK for Node.js",
   "main": "lib/index.js",
@@ -53,7 +53,6 @@
   },
   "dependencies": {
     "flow-runtime": "^0.17.0",
-    "request": "^2.87.0",
-    "request-promise": "^4.2.2"
+    "node-fetch": "^2.6.1"
   }
 }

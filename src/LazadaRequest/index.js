@@ -1,7 +1,7 @@
 // @flow
 'use strict'
 
-import rp from 'request-promise'
+import fetch from 'node-fetch'
 
 import { RESPONSE } from './constants'
 import { signRequest } from './signature'
@@ -64,18 +64,15 @@ const get = (
     params,
     getSystemQueryParamObject(appKey, appSecret, apiPath, accessToken, params),
   )
-
-  return rp({
-    url: base + apiPath,
+  const url = new URL(base + apiPath);
+  Object.keys(qs).forEach(key => url.searchParams.append(key, params[key]))
+  
+  return fetch(url, {
+    method: 'GET',
     qs,
-    json: true,
-  }).then(response => {
-    const meta = {
-      method: 'GET',
-      apiPath,
-      payload: params,
-      query: qs,
-    }
+  })
+  .then(res => res.json())
+  .then(res => {
     return handleLazadaResponse(response, meta)
   })
 }
@@ -94,19 +91,15 @@ const post = (
     body,
     getSystemQueryParamObject(appKey, appSecret, apiPath, accessToken, body),
   )
-  return rp({
-    method: 'POST',
-    url: base + apiPath,
-    qs,
-    json: true,
-    body,
-  }).then(response => {
-    const meta = {
-      method: 'POST',
-      apiPath,
-      payload: body,
-      query: qs,
-    }
+  const url = new URL(base + apiPath);
+  Object.keys(qs).forEach(key => url.searchParams.append(key, params[key]))
+  
+  return fetch(url, {
+    method: 'GET',
+    body
+  })
+  .then(res => res.json())
+  .then(res => {
     return handleLazadaResponse(response, meta)
   })
 }
